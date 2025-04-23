@@ -26,3 +26,13 @@ class Obj:
             self.frame = 1
         
         self.sprite.image = pg.image.load("BeeHoney/assets/spider" + str(self.frame) + ".png")
+
+    def flor(self):
+        self.frame =+ 1
+        if self.tick >=8:
+            self.tick = 0
+            self.frame =+ 1
+        if self.frame > 2:
+            self.frame = 1
+    
+        self.sprite.image = pg.image.load("BeeHoney/assets/flower" + str(self.frame) + ".png")
