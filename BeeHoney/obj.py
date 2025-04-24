@@ -17,22 +17,13 @@ class Obj:
     def drawing(self, window):
         self.group.draw(window)
 
-    def anim(self):
+    def anim(self, image, tick, frames):
         self.frame += 1
-        if self.tick >= 8:
+        if self.tick == tick:
             self.tick = 0
             self.frame += 1
-        if self.frame > 4:
+        if self.frame > frames:
             self.frame = 1
         
-        self.sprite.image = pg.image.load("BeeHoney/assets/spider" + str(self.frame) + ".png")
-
-    def flor(self):
-        self.frame =+ 1
-        if self.tick >=8:
-            self.tick = 0
-            self.frame =+ 1
-        if self.frame > 2:
-            self.frame = 1
-    
-        self.sprite.image = pg.image.load("BeeHoney/assets/flower" + str(self.frame) + ".png")
+        self.sprite.image = pg.image.load("BeeHoney/assets/" + image + str(self.frame) + ".png")
+        
