@@ -10,7 +10,7 @@ class Game:
         self.spider = Obj("BeeHoney/assets/spider1.png", random.randint(0, 281), -200)
         self.spider2 = Obj("BeeHoney/assets/spider1.png", random.randint(0, 281), -200)
         self.flower = Obj("BeeHoney/assets/flower1.png", random.randint(0, 332), -28)
-        self.flower2 = Obj("BeeHoney/assets/flower1.png", random.randint(0, 332), -28)
+        self.flower2 = Obj("BeeHoney/assets/flower2.png", random.randint(0, 332), -28)
         self.change_scene = False
 
     def draw(self, window):
@@ -24,9 +24,9 @@ class Game:
         self.move_bg()
         self.move_flor()
         self.move_spider()
-        self.spider.anim()
-        self.spider2.anim()
-        self.flower.flor()
+        self.spider.anim("spider", 10, 4)
+        self.spider2.anim("spider", 10, 4)
+        self.flower.anim("flower", 10, 2)
 
     def move_spider(self):
         self.spider.sprite.rect[1] += random.randint(5, 10)
@@ -60,5 +60,4 @@ class Game:
         
         if self.bg2.sprite.rect[1] >= 0:
             self.bg2.sprite.rect[1] = -640
-
 
