@@ -1,63 +1,45 @@
 import pygame as pg
-from obj import Obj
-import random
-
-class Game:
-    def __init__(self):
-        self.bg = Obj("BeeHoney/assets/bg.png", 0, 0)
-        self.bg2 = Obj("BeeHoney/assets/bg.png", 0, -640)
-
-        self.spider = Obj("BeeHoney/assets/spider1.png", random.randint(0, 281), -200)
-        self.spider2 = Obj("BeeHoney/assets/spider1.png", random.randint(0, 281), -200)
-        self.flower = Obj("BeeHoney/assets/flower1.png", random.randint(0, 332), -28)
-        self.flower2 = Obj("BeeHoney/assets/flower2.png", random.randint(0, 332), -28)
-        self.change_scene = False
-
-    def draw(self, window):
-        self.bg.drawing(window)
-        self.bg2.drawing(window)
-        self.flower.drawing(window)
-        self.spider.drawing(window)
-        self.spider2.drawing(window)
-
-    def update(self):
-        self.move_bg()
-        self.move_flor()
-        self.move_spider()
-        self.spider.anim("spider", 10, 4)
-        self.spider2.anim("spider", 10, 4)
-        self.flower.anim("flower", 10, 2)
-
-    def move_spider(self):
-        self.spider.sprite.rect[1] += random.randint(5, 10)
-        self.spider2.sprite.rect[1] += random.randint(5, 10)
-        if self.spider.sprite.rect[1] >= 640:
-            self.spider.sprite.rect[1] = 0
-            self.spider.sprite.rect[0] = random.randint(0, 281)
-            self.spider.sprite.rect[1] += random.randint(5, 10)
-        if self.spider2.sprite.rect[1] >= 640:
-            self.spider2.sprite.rect[1] = 0
-            self.spider2.sprite.rect[0] = random.randint(0, 281)
-            self.spider2.sprite.rect[1] += random.randint(5, 10)
+from obj import Obj, Bee
+from menu import Menu
+from game import Game
 
 
-    def move_flor(self):
-        self.flower.sprite.rect[1] += 1
-        self.flower2.sprite.rect[1] += 1
-        if self.flower.sprite.rect[1] >= 640:
-            self.flower.sprite.rect[1] = 0
-            self.flower.sprite.rect[0] = random.randint(0, 332)
-        if self.flower2.sprite.rect[1] >= 0:
-            self.flower2.sprite.rect[1] = -28
-            self.flower2.sprite.rect[0] = random.randint(0, 332)
+class Main:
     
-    def move_bg(self):
-        self.bg.sprite.rect[1] += 1
-        self.bg2.sprite.rect[1] += 1
+    def __init__(self, sizex, sizey, title):
 
-        if self.bg.sprite.rect[1] >= 640:
-            self.bg.sprite.rect[1] = 0
-        
-        if self.bg2.sprite.rect[1] >= 0:
-            self.bg2.sprite.rect[1] = -640
+        self.window = pg.display.set_mode([sizex, sizey])
+        self.title = pg.display.set_caption(title)
 
+        self.start_screen = Menu()
+        self.game = Game()
+
+        self.loop = True
+        self.fps = pg.time.Clock()
+
+    def draw(self):
+        self.window.fill([0, 0, 0])
+        if not self.start_screen.change_scene:
+            self.start_screen.draw(self.window)
+        elif not self.game.change_scene:
+            self.game.draw(self.window)
+            self.game.update()
+
+    def events(self):
+        for events in pg.event.get():
+            if events.type == pg.QUIT:
+                self.loop = False
+            
+            self.start_screen.events(events)
+            self.game.bee.move_bee(events)
+
+    
+    def update(self):
+        while self.loop:
+            self.fps.tick(10)
+            self.draw()
+            self.events()
+            pg.display.update()
+
+game = Main(360, 640, "BeeHoney")
+game.update()
