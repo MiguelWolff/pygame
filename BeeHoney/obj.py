@@ -27,3 +27,11 @@ class Obj:
         
         self.sprite.image = pg.image.load("BeeHoney/assets/" + image + str(self.frame) + ".png")
         
+class Bee(Obj):
+    def __init__(self, image, x, y):
+        super().__init__(image, x, y)
+    
+    def move_bee(self, event):
+        if event.type == pg.MOUSEMOTION:
+            self.sprite.rect[0] = pg.mouse.get_pos()[0]
+            self.sprite.rect[1] = pg.mouse.get_pos()[1]
