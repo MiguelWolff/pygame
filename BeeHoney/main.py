@@ -1,5 +1,5 @@
 import pygame as pg
-from obj import Obj
+from obj import Obj, Bee
 from menu import Menu
 from game import Game
 
@@ -11,7 +11,7 @@ class Main:
         self.window = pg.display.set_mode([sizex, sizey])
         self.title = pg.display.set_caption(title)
 
-        self.menu = Menu()
+        self.start_screen = Menu()
         self.game = Game()
 
         self.loop = True
@@ -19,8 +19,8 @@ class Main:
 
     def draw(self):
         self.window.fill([0, 0, 0])
-        if not self.menu.change_scene:
-            self.menu.draw(self.window)
+        if not self.start_screen.change_scene:
+            self.start_screen.draw(self.window)
         elif not self.game.change_scene:
             self.game.draw(self.window)
             self.game.update()
@@ -30,7 +30,9 @@ class Main:
             if events.type == pg.QUIT:
                 self.loop = False
             
-            self.menu.events(events)
+            self.start_screen.events(events)
+            self.game.bee.move_bee(events)
+
     
     def update(self):
         while self.loop:
